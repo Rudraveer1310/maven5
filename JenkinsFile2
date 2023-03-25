@@ -1,6 +1,6 @@
 node('built-in')
 {stage('continueousDownload')
-    {git 'https://github.com/Rudraveer1310/maven.git'}
+    {git 'https://github.com/Rudraveer1310/maven5.git'}
     stage('contineousBuild')
     {sh 'mvn package'}
     stage('contineousDeploy')
