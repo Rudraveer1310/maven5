@@ -1,45 +1,14 @@
-pipeline
-{ 
-  agent any
-  stages
-   {
-    stage('ContinuousDownload')
-	 {
-	  steps
-	   {
-	    git 'https://github.com/prasadcloud/maven2.git'
-		}
-	 }
-	 stage('ContinuousBuild')
-	 {
-	  steps
-	   {
-	    sh 'mvn package'
-		}
-	 }
-	 stage('ContinuousDeploy')
-	 {
-	  steps
-	   {
-	    sh 'scp /var/lib/jenkins/workspace/DeclarativePipeline2/webapp/target/webapp.war ubuntu@172.31.13.164:/var/lib/tomcat9/webapps/testapp7.war'
-
-		}
-	 }
-	 stage('ContinuousTesting')
-	 {
-	  steps
-	   {
-	    git 'https://github.com/prasadcloud/FunctionalTesting.git'
-	    sh 'java -jar  /var/lib/jenkins/workspace/DeclarativePipeline2/testing.jar'
-		}
-	 }
-	 stage('ContinuousDelivery')
-	 {
-	  steps
-	   {
-	    input message: 'Approve delivery of code', submitter: 'srini'
-	    deploy adapters: [tomcat9(credentialsId: 'bfda19c6-2e25-4428-b56e-dd079052d2e7', path: '', url: 'http://172.31.4.50:8080')], contextPath: 'prodapp5', war: '**/*.war'
-		}
-	 }
-   }
+node('built-in')
+{stage('continueousDownload')
+    {git 'https://github.com/Rudraveer1310/maven.git'}
+    stage('contineousBuild')
+    {sh 'mvn package'}
+    stage('contineousDeploy')
+    {deploy adapters: [tomcat9(credentialsId: '50c1608c-4a2d-4105-8ae8-f1196451bdaa', path: '', url: 'http://172.31.39.59:8080')], contextPath: 'testapp', war: '**/*.war'}
+    stage('contineousTesting')
+    {git 'https://github.com/Rudraveer1310/FunctionalTesting.git'
+     sh 'java -jar /var/lib/jenkins/workspace/ScriptedPipeline1/testing.jar'}
+    stage('contineousDelivery')
+    {input message: 'allow for production', submitter: 'vardhan'
+     deploy adapters: [tomcat9(credentialsId: 'a1467b41-4365-4530-a4ea-4fc5393c1769', path: '', url: 'http://172.31.36.231:8080')], contextPath: 'prodapp1', war: '**/*.war'}
 }
