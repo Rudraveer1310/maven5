@@ -5,4 +5,4 @@ node('built-in')
     {sh 'mvn package'}
     stage('contineousDeploy')
     {deploy adapters: [tomcat9(credentialsId: '50c1608c-4a2d-4105-8ae8-f1196451bdaa', path: '', url: 'http://172.31.39.59:8080')], contextPath: 'testapp', war: '**/*.war'}
-    }
+}
